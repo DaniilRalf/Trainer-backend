@@ -23,20 +23,6 @@ const root = {
     // getUser: async ({id}) => {
     //     return await User.findOne({where: {id: id}});
     // },
-    //
-    // createUser: async ({input}) => {
-    //     const userSearch = await User.findOne({where: {username: input.username}});
-    //     if (userSearch){
-    //         return new Error('Данный пользователь уже в системе')
-    //     }
-    //     return await User.create({
-    //         username: input.username,
-    //         password: input.password,
-    //         first_name: input.first_name,
-    //         last_name: input.last_name,
-    //         roleId: 1
-    //     });
-    // },
 
     loginUser: async ({input}) => {
         const userSearch = await User.findOne({where: {username: input.username}});
