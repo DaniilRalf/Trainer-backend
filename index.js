@@ -11,6 +11,7 @@ const root = require('./controllers/qraphQL/index');
 
 
 //middleware
+//==== добавить обработку ошибок
 let test = (req, res, next) => {
     next()
 }

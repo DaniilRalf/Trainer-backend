@@ -32,7 +32,7 @@ const schema = buildSchema(`
         shoulder_girth: Int
         shoulder_hips: Int
         shoulder_hip: Int
-        date_metering: Int
+        date_metering: Float
     }
     
     
@@ -58,6 +58,7 @@ const schema = buildSchema(`
         getAllUsers: [User]
         getUser(id: ID): User
         getUserPersonalParameters(username: String): User 
+        getAllClients: [User]
     }
     type Mutation {
         createUser(input: UserInput): User

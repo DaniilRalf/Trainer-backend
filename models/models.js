@@ -28,7 +28,7 @@ const Parameter = sequelize.define("parameter", {
     shoulder_girth: {type: DataTypes.INTEGER, required: true},
     shoulder_hips: {type: DataTypes.INTEGER, required: true},
     shoulder_hip: {type: DataTypes.INTEGER, required: true},
-    date_metering: {type: DataTypes.INTEGER, required: true},
+    date_metering: {type: DataTypes.FLOAT, required: true},
 })
 
 Role.hasMany(User)

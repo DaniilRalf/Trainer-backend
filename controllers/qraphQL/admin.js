@@ -27,16 +27,19 @@ const root = {
         const userItem = await User.create(dataUser);
         const personalItem = await Personal.create(dataPersonal);
         const searchRole = await Role.findOne({where: {id: input.roleId}});
-
         await userItem.setPersonal(personalItem);
         await searchRole.addUsers([userItem]);
-
         return {
             username: input.username,
         }
-    }
+    },
 
-
+    getAllClients: async () => {
+        return await User.findAll({
+            where: {roleId: 1},
+            include: [Role, Personal, Parameter]
+        });
+    },
 
 }
 module.exports = root

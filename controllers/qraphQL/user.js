@@ -16,14 +16,6 @@ const generateAccessToken = (id, role) => {
 
 const root = {
 
-    // getAllUsers: async () => {
-    //     return await User.findAll({include: [Role]});
-    // },
-    //
-    // getUser: async ({id}) => {
-    //     return await User.findOne({where: {id: id}});
-    // },
-
     loginUser: async ({input}) => {
         const userSearch = await User.findOne({where: {username: input.username}});
         if (!userSearch){
