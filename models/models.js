@@ -30,6 +30,11 @@ const Parameter = sequelize.define("parameter", {
     shoulder_hip: {type: DataTypes.INTEGER, required: true},
     date_metering: {type: DataTypes.FLOAT, required: true},
 })
+const Schedule = sequelize.define('schedule', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, unique: true, autoIncrement:true},
+    date: {type: DataTypes.FLOAT, required: true},
+    description: {type: DataTypes.STRING, required: true},
+})
 
 Role.hasMany(User)
 User.belongsTo(Role)
@@ -40,9 +45,13 @@ Personal.belongsTo(User)
 User.hasMany(Parameter)
 Parameter.belongsTo(User)
 
+User.hasMany(Schedule)
+Schedule.belongsTo(User)
+
 module.exports = {
     User,
     Role,
     Personal,
     Parameter,
+    Schedule,
 }

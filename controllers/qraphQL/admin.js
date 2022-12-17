@@ -2,7 +2,8 @@ const {
     Role,
     User,
     Personal,
-    Parameter
+    Parameter,
+    Schedule
 } = require('../../models/models');
 
 const root = {
@@ -10,7 +11,7 @@ const root = {
     createClient: async ({input}) => {
         const userSearch = await User.findOne({where: {username: input.username}});
         if (userSearch){
-            return new Error('Пользователь c таким ником уже существует уже существует');
+            return new Error('Пользователь c таким ником уже существует');
         };
         const dataUser = {
             username: input.username,
@@ -34,12 +35,53 @@ const root = {
         }
     },
 
-    getAllClients: async () => {
-        return await User.findAll({
-            where: {roleId: 1},
-            include: [Role, Personal, Parameter]
-        });
+    createParametersClient: async ({input}) => {
+        const userSearch = await User.findOne({where: {id: input.id}});
+        if (!userSearch){
+            return new Error('Пользователя не существует');
+        };
+        const dataPersonal = {
+            weight: input.parameters.weight,
+            shoulder_hips: input.parameters.shoulder_hips,
+            shoulder_hip: input.parameters.shoulder_hip,
+            shoulder_girth: input.parameters.shoulder_girth,
+            shoulder_bust: input.parameters.shoulder_bust,
+            date_metering: input.parameters.date_metering
+        };
+        const parametersItem = await Parameter.create(dataPersonal)
+        await userSearch.addParameters([parametersItem]);
+
+        //====создать новый замер
+        return {id: input.id}
     },
+
+    getAllClients: async () => {
+        const allClients = await User.findAll({
+            where: {roleId: 1},
+            include: [Role, Personal, Parameter, Schedule],
+        });
+        return allClients;
+    },
+
+    createTrainingDays: async ({input}) => {
+        // console.log(input);
+        const userSearch = await User.findOne({where: {id: input.id}});
+        if (!userSearch){
+            return new Error('Пользователя не существует');
+        };
+
+
+        for (const schedule of input.schedules) {
+            const dataSchedules = {
+                date: schedule.date,
+                description: schedule.description,
+            };
+            const scheduleItem = await Schedule.create(dataSchedules);
+            await userSearch.addSchedules([scheduleItem]);
+          }
+
+        return {id: input.id}
+    }
 
 }
 module.exports = root

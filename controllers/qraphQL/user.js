@@ -1,4 +1,4 @@
-const {Role, User, Personal} = require('../../models/models');
+const {Role, User, Personal, Schedule} = require('../../models/models');
 const {Parameter} = require('../../models/models');
 // const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -21,6 +21,7 @@ const root = {
         if (!userSearch){
             return new Error('Пользовател не найден');
         }
+        // ====сделвть преобразование пароля в хеш
         // const validPassword = bcrypt.compareSync(password, condidate.password);
         // if (!validPassword){
         //     return new Error('Введен не верный пароль');
@@ -40,7 +41,7 @@ const root = {
     getUserPersonalParameters: async ({username}) => {
         return await User.findOne({
             where: {username: username},
-            include: [Personal, Parameter]
+            include: [Personal, Parameter, Schedule]
         });
     }
 

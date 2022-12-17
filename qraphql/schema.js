@@ -13,6 +13,7 @@ const schema = buildSchema(`
         role: Role
         personal: Personal
         parameters: [Parameter]
+        schedules: [Schedule]
     }
     type Role {
         id: ID
@@ -34,6 +35,11 @@ const schema = buildSchema(`
         shoulder_hip: Int
         date_metering: Float
     }
+    type Schedule {
+        id: ID
+        date: Float
+        description: String
+    }
     
     
     input UserInput {
@@ -44,6 +50,8 @@ const schema = buildSchema(`
         last_name: String
         roleId: Int
         personal: PersonalInput
+        parameters: ParameterInput
+        schedules: [ScheduleInput]
     }
     input PersonalInput {
         id: ID
@@ -52,10 +60,23 @@ const schema = buildSchema(`
         birth_day: Float
         start_train: Float
     }
+    input ParameterInput {
+        id: ID
+        weight: Int
+        shoulder_bust: Int
+        shoulder_girth: Int
+        shoulder_hips: Int
+        shoulder_hip: Int
+        date_metering: Float
+    }
+    input ScheduleInput {
+        id: ID
+        date: Float
+        description: String
+    }
     
     
     type Query {
-        getAllUsers: [User]
         getUser(id: ID): User
         getUserPersonalParameters(username: String): User 
         getAllClients: [User]
@@ -64,6 +85,9 @@ const schema = buildSchema(`
         createUser(input: UserInput): User
         loginUser(input: UserInput): User
         createClient(input: UserInput): User
+        createParametersClient(input: UserInput): User
+
+        createTrainingDays(input: UserInput): User
     }
 `)
 module.exports = schema;
