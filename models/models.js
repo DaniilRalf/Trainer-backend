@@ -35,6 +35,12 @@ const Schedule = sequelize.define('schedule', {
     date: {type: DataTypes.FLOAT, required: true},
     description: {type: DataTypes.STRING, required: true},
 })
+const Photo = sequelize.define('photo', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, unique: true, autoIncrement:true},
+    file_name: {type: DataTypes.STRING, unique: true},
+    date: {type: DataTypes.FLOAT, required: true},
+    type: {type: DataTypes.INTEGER, required: true},
+})
 
 Role.hasMany(User)
 User.belongsTo(Role)
@@ -48,10 +54,14 @@ Parameter.belongsTo(User)
 User.hasMany(Schedule)
 Schedule.belongsTo(User)
 
+User.hasMany(Photo)
+Photo.belongsTo(User)
+
 module.exports = {
     User,
     Role,
     Personal,
     Parameter,
     Schedule,
+    Photo,
 }

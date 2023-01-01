@@ -1,13 +1,16 @@
 const express = require('express');
 require('dotenv').config();
 const cors = require('cors');
+const fileUpload = require('express-fileupload');
+const path = require('path');
 const sequelize = require('./db');
 const Models = require('./models/models');
 const AuthorizationMiddleware = require('./middleware/authorization');
 
 const {graphqlHTTP} = require('express-graphql');
-const schema = require('./qraphql/schema');
+const schema = require('./api/qraphql/schema');
 const root = require('./controllers/qraphQL/index');
+const routers = require("./api/routers");
 
 
 //middleware
@@ -20,7 +23,9 @@ let test = (req, res, next) => {
 const PORT = process.env.PORT;
 const app = express();
 app.use(express.json());
+app.use(express.static(path.resolve(__dirname, 'static')));
 app.use(cors());
+app.use(fileUpload());
 
 app.use(AuthorizationMiddleware);
 app.use('/graphql', test, graphqlHTTP({
@@ -31,6 +36,7 @@ app.use('/graphql', test, graphqlHTTP({
     //     return err.message
     // }
 }))
+app.use('/api', routers)
 // CONSTANTS---------------------------------------
 
 
