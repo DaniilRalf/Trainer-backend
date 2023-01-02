@@ -9,7 +9,7 @@ const path = require('path');
 class SetPhotosController {
     async saveNewPhoto(req, res) {
         try {
-            const { date, id } = req.body;
+            const { date, id, angle } = req.body;
             const { img } = req.files;
             const userSearch = await  User.findOne({where: {id: id}})
             if (!userSearch){
@@ -22,6 +22,7 @@ class SetPhotosController {
                 file_name: photoName,
                 date: String(date),
                 type: 2,
+                angle: angle,
             })
             await userSearch.addPhotos([photoItem]);
             res.json(photoItem)

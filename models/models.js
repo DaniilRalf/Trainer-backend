@@ -39,6 +39,7 @@ const Photo = sequelize.define('photo', {
     id: {type: DataTypes.INTEGER, primaryKey: true, unique: true, autoIncrement:true},
     file_name: {type: DataTypes.STRING, unique: true},
     date: {type: DataTypes.FLOAT, required: true},
+    angle: {type: DataTypes.STRING, required: false},
     type: {type: DataTypes.INTEGER, required: true},
 })
 
