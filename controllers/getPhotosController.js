@@ -23,7 +23,6 @@ class GetPhotosController {
         try {
             const { id } = req.body;
             const PhotoItems = await Photo.findAll({where: {userId: id, type: 2}})
-            console.log(PhotoItems)
             res.json(PhotoItems);
         } catch (e) {
             res.status(400).json(e)
