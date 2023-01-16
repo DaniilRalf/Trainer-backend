@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
-    "build_prod": "webpack  --mode production",
-    "build_dev": "webpack --mode development"
+    "build": "webpack --config webpack.config.js --watch"
   },
   "author": "",
   "license": "ISC",
@@ -26,6 +25,8 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "clean-webpack-plugin": "^4.0.0",
+    "copy-webpack-plugin": "^11.0.0",
     "webpack": "^5.75.0",
     "webpack-cli": "^5.0.1"
   }
