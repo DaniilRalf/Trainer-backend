@@ -9,10 +9,10 @@ const path = require('path');
 class SetPhotosController {
     async saveNewPhoto(req, res) {
         try {
-            const { date, id, angle } = req.body;
-            const { img } = req.files;
-            const userSearch = await  User.findOne({where: {id: id}})
-            if (!userSearch){
+            const {date, id, angle} = req.body;
+            const {img} = req.files;
+            const userSearch = await User.findOne({where: {id: id}})
+            if (!userSearch) {
                 res.status(400).json('Данного пользователя не существует')
                 return
             }
@@ -31,4 +31,5 @@ class SetPhotosController {
         }
     }
 }
+
 module.exports = new SetPhotosController();

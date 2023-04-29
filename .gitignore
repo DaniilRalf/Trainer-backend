@@ -1,7 +1,6 @@
 # dependencies
 /node_modules
 /.pnp
-/dist
 .pnp.js
 .xml
 .iml
@@ -11,7 +10,7 @@
 /coverage
 
 # production
-/build
+/dist
 
 # misc
 npm-debug.log*
