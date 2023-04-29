@@ -36,19 +36,7 @@ const root = {
     },
 
     createParametersClient: async ({input}) => {
-        if (input.parameters.id) {
-            /** Update item Parameter*/
-            const parameterSearch = await Parameter.findOne({where: {id: input.parameters.id}})
-            if (!parameterSearch){
-                return new Error('Параметер не найден не существует')
-            }
-            for (let [key, value] of Object.entries(input.parameters)) {
-                if (key !== 'id' && value) {
-                    await parameterSearch.update({[key]: value})
-                }
-            }
-            return {id: input.id}
-        } else {
+        if (input.parameters.event === 'add') {
             /** Create new item Parameter for user*/
             const userSearch = await User.findOne({where: {id: input.id}})
             if (!userSearch){
@@ -65,6 +53,28 @@ const root = {
             const parametersItem = await Parameter.create(dataPersonal)
             await userSearch.addParameters([parametersItem]);
             return {id: input.id}
+        }
+        if (input.parameters.event === 'update') {
+            /** Update item Parameter*/
+            const parameterSearch = await Parameter.findOne({where: {id: input.parameters.id}})
+            if (!parameterSearch){
+                return new Error('Параметер не найден не существует')
+            }
+            for (let [key, value] of Object.entries(input.parameters)) {
+                if (key !== 'id' && value) {
+                    await parameterSearch.update({[key]: value})
+                }
+            }
+            return {id: input.id}
+        }
+        /** Remove new item Parameter for user*/
+        if (input.parameters.event === 'remove') {
+            const parameterSearch = await Parameter.findOne({where: {id: input.id}})
+            if (!parameterSearch){
+                return new Error('Параметер не найден не существует')
+            }
+            await parameterSearch.destroy()
+            return {id: input.parameters.id}
         }
     },
 

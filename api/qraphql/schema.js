@@ -61,6 +61,7 @@ const schema = buildSchema(`
         start_train: Float
     }
     input ParameterInput {
+        event: String
         id: ID
         weight: Int
         shoulder_bust: Int
