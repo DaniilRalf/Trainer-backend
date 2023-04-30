@@ -83,10 +83,11 @@ const schema = buildSchema(`
         getAllClients: [User]
     }
     type Mutation {
-        createUser(input: UserInput): User
         loginUser(input: UserInput): User
         createClient(input: UserInput): User
-        createParametersClient(input: UserInput): User
+        
+        eventWithParameterClient(input: UserInput): User
+        updatePersonalClient(input: PersonalInput): User
 
         createTrainingDays(input: UserInput): User
     }

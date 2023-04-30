@@ -35,7 +35,7 @@ const root = {
         }
     },
 
-    createParametersClient: async ({input}) => {
+    eventWithParameterClient: async ({input}) => {
         if (input.parameters.event === 'add') {
             /** Create new item Parameter for user*/
             const userSearch = await User.findOne({where: {id: input.id}})
@@ -71,11 +71,27 @@ const root = {
         if (input.parameters.event === 'remove') {
             const parameterSearch = await Parameter.findOne({where: {id: input.id}})
             if (!parameterSearch){
-                return new Error('Параметер не найден не существует')
+                return new Error('Параметер не найден')
             }
-            await parameterSearch.destroy()
-            return {id: input.parameters.id}
+
+            return {id: input.id}
         }
+    },
+
+    updatePersonalClient: async ({input}) => {
+        console.log('======================')
+        console.log(input)
+        console.log('======================')
+        const personalSearch = await Personal.findOne({where: {id: input.id}})
+        if (!personalSearch){
+            return new Error('Персональные данные не найдены')
+        }
+        for (let [key, value] of Object.entries(input)) {
+            if (key !== 'id' && value) {
+                await personalSearch.update({[key]: value})
+            }
+        }
+        return {id: input.id}
     },
 
     getAllClients: async () => {
