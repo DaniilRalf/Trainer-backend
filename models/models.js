@@ -33,7 +33,9 @@ const Parameter = sequelize.define("parameter", {
 const Schedule = sequelize.define('schedule', {
     id: {type: DataTypes.INTEGER, primaryKey: true, unique: true, autoIncrement:true},
     date: {type: DataTypes.FLOAT, required: true},
-    description: {type: DataTypes.STRING, required: true},
+    description: {type: DataTypes.STRING, required: false},
+    time_start: {type: DataTypes.STRING, required: false},
+    time_duration: {type: DataTypes.STRING, required: false},
 })
 const Photo = sequelize.define('photo', {
     id: {type: DataTypes.INTEGER, primaryKey: true, unique: true, autoIncrement:true},

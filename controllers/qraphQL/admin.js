@@ -106,19 +106,18 @@ const root = {
         // console.log(input);
         const userSearch = await User.findOne({where: {id: input.id}});
         if (!userSearch){
-            return new Error('Пользователя не существует');
-        };
-
-
+            return new Error('Пользователя не существует')
+        }
         for (const schedule of input.schedules) {
             const dataSchedules = {
                 date: schedule.date,
                 description: schedule.description,
-            };
-            const scheduleItem = await Schedule.create(dataSchedules);
-            await userSearch.addSchedules([scheduleItem]);
+                time_start: schedule.time_start,
+                time_duration: schedule.time_duration,
+            }
+            const scheduleItem = await Schedule.create(dataSchedules)
+            await userSearch.addSchedules([scheduleItem])
           }
-
         return {id: input.id}
     }
 

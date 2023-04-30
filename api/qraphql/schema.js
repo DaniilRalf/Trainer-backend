@@ -74,6 +74,8 @@ const schema = buildSchema(`
         id: ID
         date: Float
         description: String
+        time_start: String
+        time_duration: String
     }
     
     
