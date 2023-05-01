@@ -79,9 +79,6 @@ const root = {
     },
 
     updatePersonalClient: async ({input}) => {
-        console.log('======================')
-        console.log(input)
-        console.log('======================')
         const personalSearch = await Personal.findOne({where: {id: input.id}})
         if (!personalSearch){
             return new Error('Персональные данные не найдены')
