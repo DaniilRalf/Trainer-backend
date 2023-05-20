@@ -73,12 +73,12 @@ const root = {
             if (!parameterSearch){
                 return new Error('Параметер не найден')
             }
-
+            await Parameter.destroy({where: {id: parameterSearch.id}})
             return {id: input.id}
         }
     },
 
-    updatePersonalClient: async ({input}) => {
+     updatePersonalClient: async ({input}) => {
         const personalSearch = await Personal.findOne({where: {id: input.id}})
         if (!personalSearch){
             return new Error('Персональные данные не найдены')

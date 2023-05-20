@@ -9,6 +9,7 @@ const User = sequelize.define("user", {
     first_name: { type: DataTypes.STRING, required: true },
     last_name: { type: DataTypes.STRING, required: true},
     password: {type: DataTypes.STRING, required: true},
+    is_active: {type: DataTypes.BOOLEAN, required: true, defaultValue: true},
 });
 const Role = sequelize.define("role", {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement:true},
