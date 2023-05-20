@@ -1,32 +1,38 @@
-const {Role, User, Personal, Schedule} = require('../../models/models');
-const {Parameter} = require('../../models/models');
-// const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+const {User, Personal, Schedule} = require('../../models/models')
+const {Parameter} = require('../../models/models')
+const jwt = require('jsonwebtoken')
+const bcrypt = require('bcryptjs')
+const {GraphQLError} = require("graphql/error");
 
 
-
-const generateAccessToken = (id, role) => {
-    //====засунуть SECRET_KEY в енвайромент
+const generateAccessToken = (id, role, username) => {
     const payload = {
         id,
-        role
+        role,
+        username
     }
-    return jwt.sign(payload, 'SECRET_KEY', {expiresIn: "24h"})
+    return jwt.sign(payload, process.env.SECRET_KEY, {expiresIn: "24h"})
 }
 
 const root = {
 
     loginUser: async ({input}) => {
         const userSearch = await User.findOne({where: {username: input.username}});
-        if (!userSearch){
-            return new Error('Пользовател не найден');
+        if (!userSearch) {
+            throw new GraphQLError('Пользователь не найден', {
+                extensions: {code: 500}
+            });
         }
-        // ====сделвть преобразование пароля в хеш
-        // const validPassword = bcrypt.compareSync(password, condidate.password);
-        // if (!validPassword){
-        //     return new Error('Введен не верный пароль');
-        // }
-        const token = generateAccessToken(userSearch.id, userSearch.roleId);
+        const validPassword = bcrypt.compareSync(
+            input.password,
+            userSearch.password,
+        )
+        if (!validPassword) {
+            throw new GraphQLError('Введен неверный пароль', {
+                extensions: {code: 500}
+            });
+        }
+        const token = generateAccessToken(userSearch.id, userSearch.roleId, userSearch.username);
 
         return {
             id: userSearch.id,

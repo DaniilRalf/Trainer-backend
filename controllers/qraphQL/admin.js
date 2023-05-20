@@ -6,18 +6,22 @@ const {
     Schedule
 } = require('../../models/models');
 
+const bcrypt = require('bcryptjs')
+const {all} = require("express/lib/application");
+
 const root = {
 
     createClient: async ({input}) => {
         const userSearch = await User.findOne({where: {username: input.username}});
         if (userSearch){
             return new Error('Пользователь c таким ником уже существует');
-        };
+        }
+        const hashPassword = await bcrypt.hash(input.password, 3)
         const dataUser = {
             username: input.username,
             first_name: input.first_name,
             last_name: input.last_name,
-            password: input.password,
+            password: hashPassword,
         };
         const dataPersonal = {
             gender: input.personal.gender,
@@ -96,6 +100,14 @@ const root = {
             where: {roleId: 1},
             include: [Role, Personal, Parameter, Schedule],
         });
+        // TODO: потом стоит добавить отдельную строку для исходного пароля чтобы админ мог его видеть
+        // allClients.forEach(client => {
+        //     const validPassword = bcrypt.compareSync(
+        //         client.password,
+        //         userSearch.password,
+        //     )
+        //     client.password =
+        // })
         return allClients;
     },
 

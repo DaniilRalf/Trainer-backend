@@ -1,4 +1,5 @@
 const { Role, User } = require('../models/models')
+const bcrypt = require("bcryptjs");
 
 module.exports = async () => {
     const roleUser = await Role.findOne({where: {value: 'USER'}})
@@ -12,11 +13,12 @@ module.exports = async () => {
             await Role.create({value: 'ADMIN'})
         }
         if (!admin) {
+            const hashPassword = await bcrypt.hash('alina_admin', 5)
             await User.create({
                 username: 'alina_admin',
                 first_name: 'alina_admin',
                 last_name: 'alina_admin',
-                password: 'alina_admin',
+                password: hashPassword,
                 roleId: 2
             })
         }
