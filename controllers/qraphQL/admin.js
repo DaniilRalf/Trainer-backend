@@ -112,7 +112,6 @@ const root = {
     },
 
     createTrainingDays: async ({input}) => {
-        // console.log(input);
         const userSearch = await User.findOne({where: {id: input.id}});
         if (!userSearch){
             return new Error('Пользователя не существует')
