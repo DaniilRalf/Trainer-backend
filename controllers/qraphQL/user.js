@@ -40,6 +40,7 @@ const root = {
             first_name: userSearch.first_name,
             last_name: userSearch.last_name,
             roleId: userSearch.roleId,
+            is_active: userSearch.is_active,
             token: token
         }
     },

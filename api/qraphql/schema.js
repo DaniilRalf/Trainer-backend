@@ -6,6 +6,7 @@ const schema = buildSchema(`
         id: ID
         username: String
         password: String
+        is_active: Boolean 
         token: String
         first_name: String
         last_name: String
@@ -50,6 +51,7 @@ const schema = buildSchema(`
         password: String
         first_name: String
         last_name: String
+        is_active: Boolean
         roleId: Int
         personal: PersonalInput
         parameters: ParameterInput
