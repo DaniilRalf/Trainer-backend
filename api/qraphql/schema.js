@@ -15,6 +15,7 @@ const schema = buildSchema(`
         personal: Personal
         parameters: [Parameter]
         schedules: [Schedule]
+        photos: [Photo]
     }
     type Role {
         id: ID
@@ -43,10 +44,18 @@ const schema = buildSchema(`
         time_start: String
         time_duration: String
     }
+    type Photo {
+       id: ID
+       file_name: String
+       date: Float
+       angle: String
+       type: Int
+    }
     
     
     input UserInput {
         id: ID
+        active: Boolean
         username: String
         password: String
         first_name: String
@@ -94,6 +103,8 @@ const schema = buildSchema(`
         
         eventWithParameterClient(input: UserInput): User
         updatePersonalClient(input: PersonalInput): User
+        
+        updateActiveClient(input: UserInput): User
 
         createTrainingDays(input: UserInput): User
     }

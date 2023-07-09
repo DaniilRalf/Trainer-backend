@@ -3,13 +3,23 @@ const {
     User,
     Personal,
     Parameter,
-    Schedule
+    Schedule,
+    Photo
 } = require('../../models/models');
 
 const bcrypt = require('bcryptjs')
 const {all} = require("express/lib/application");
 
 const root = {
+
+    getAllClients: async () => {
+        const allClients = await User.findAll({
+            where: {roleId: 1},
+            include: [Role, Personal, Parameter, Schedule, Photo],
+        });
+        // TODO: потом стоит добавить отдельную строку для исходного пароля чтобы админ мог его видеть
+        return allClients;
+    },
 
     createClient: async ({input}) => {
         const userSearch = await User.findOne({where: {username: input.username}});
@@ -95,20 +105,13 @@ const root = {
         return {id: input.id}
     },
 
-    getAllClients: async () => {
-        const allClients = await User.findAll({
-            where: {roleId: 1},
-            include: [Role, Personal, Parameter, Schedule],
-        });
-        // TODO: потом стоит добавить отдельную строку для исходного пароля чтобы админ мог его видеть
-        // allClients.forEach(client => {
-        //     const validPassword = bcrypt.compareSync(
-        //         client.password,
-        //         userSearch.password,
-        //     )
-        //     client.password =
-        // })
-        return allClients;
+    updateActiveClient: async ({input}) => {
+        const userSearch = await User.findOne({where: {id: input.id}})
+        if (!userSearch){
+            return new Error('Пользователь не найден')
+        }
+        await userSearch.update({is_active: input.active})
+        return {id: input.id}
     },
 
     createTrainingDays: async ({input}) => {
