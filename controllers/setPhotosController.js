@@ -7,6 +7,7 @@ const path = require('path');
 
 
 class SetPhotosController {
+
     async saveNewPhoto(req, res) {
         try {
             const {date, id, angle} = req.body;
@@ -30,6 +31,22 @@ class SetPhotosController {
             res.status(400).json(e)
         }
     }
+
+    async removePhotosGroup(req, res) {
+        try {
+            const removePhotoIDArray = req.body
+
+            for (const itemId of removePhotoIDArray) {
+                const photoItem = await Photo.findOne({where: {id: itemId}})
+                if (!photoItem) continue
+                await photoItem.destroy({where: {id: itemId}})
+            }
+            res.json('Фото удалены')
+        } catch (e) {
+            res.status(400).json(e)
+        }
+    }
+
 }
 
 module.exports = new SetPhotosController();

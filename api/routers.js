@@ -8,4 +8,6 @@ routers.post('/get_client_item_photos', getPhotosController.getItemClientBeforeA
 
 routers.post('/set_client_photos', setPhotosController.saveNewPhoto)
 
+routers.post('/remove_client_photos_group', setPhotosController.removePhotosGroup)
+
 module.exports = routers
