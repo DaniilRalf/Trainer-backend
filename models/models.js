@@ -45,6 +45,13 @@ const Photo = sequelize.define('photo', {
     angle: {type: DataTypes.STRING, required: false},
     type: {type: DataTypes.INTEGER, required: true},
 })
+const Feed = sequelize.define('feed', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, unique: true, autoIncrement:true},
+    protein: {type: DataTypes.STRING, required: false},
+    fat: {type: DataTypes.STRING, required: false},
+    carbohydrates: {type: DataTypes.STRING, required: false},
+    recommendation: {type: DataTypes.STRING, required: false},
+})
 
 Role.hasMany(User)
 User.belongsTo(Role)
@@ -61,6 +68,9 @@ Schedule.belongsTo(User)
 User.hasMany(Photo)
 Photo.belongsTo(User)
 
+User.hasOne(Feed)
+Feed.belongsTo(User)
+
 module.exports = {
     User,
     Role,
@@ -68,4 +78,5 @@ module.exports = {
     Parameter,
     Schedule,
     Photo,
+    Feed,
 }

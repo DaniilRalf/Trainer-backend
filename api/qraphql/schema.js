@@ -16,6 +16,7 @@ const schema = buildSchema(`
         parameters: [Parameter]
         schedules: [Schedule]
         photos: [Photo]
+        feed: Feed
     }
     type Role {
         id: ID
@@ -51,6 +52,13 @@ const schema = buildSchema(`
        angle: String
        type: Int
     }
+    type Feed {
+        id: ID
+        protein: String
+        fat: String
+        carbohydrates: String
+        recommendation: String
+    }
     
     
     input UserInput {
@@ -65,6 +73,7 @@ const schema = buildSchema(`
         personal: PersonalInput
         parameters: ParameterInput
         schedules: [ScheduleInput]
+        feed: FeedInput
     }
     input PersonalInput {
         id: ID
@@ -90,6 +99,13 @@ const schema = buildSchema(`
         time_start: String
         time_duration: String
     }
+    input FeedInput {
+        id: ID
+        protein: String
+        fat: String
+        carbohydrates: String
+        recommendation: String
+    }
     
     
     type Query {
@@ -98,15 +114,18 @@ const schema = buildSchema(`
         getAllClients: [User]
     }
     type Mutation {
+    
         loginUser(input: UserInput): User
+        
+        createTrainingDays(input: UserInput): User
         createClient(input: UserInput): User
         
         eventWithParameterClient(input: UserInput): User
-        updatePersonalClient(input: PersonalInput): User
         
+        updatePersonalClient(input: PersonalInput): User
         updateActiveClient(input: UserInput): User
-
-        createTrainingDays(input: UserInput): User
+        updateFeedClient(input: UserInput): User
+        
     }
 `)
 module.exports = schema;

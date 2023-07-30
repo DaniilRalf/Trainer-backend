@@ -4,18 +4,25 @@ const {
     Personal,
     Parameter,
     Schedule,
-    Photo
+    Photo, Feed
 } = require('../../models/models');
 
 const bcrypt = require('bcryptjs')
-const {all} = require("express/lib/application");
+const {DataTypes} = require("sequelize");
 
 const root = {
 
     getAllClients: async () => {
         const allClients = await User.findAll({
             where: {roleId: 1},
-            include: [Role, Personal, Parameter, Schedule, Photo],
+            include: [
+                Role,
+                Personal,
+                Parameter,
+                Schedule,
+                Photo,
+                Feed
+            ],
         });
         // TODO: потом стоит добавить отдельную строку для исходного пароля чтобы админ мог его видеть
         return allClients;
@@ -71,9 +78,7 @@ const root = {
         if (input.parameters.event === 'update') {
             /** Update item Parameter*/
             const parameterSearch = await Parameter.findOne({where: {id: input.parameters.id}})
-            if (!parameterSearch){
-                return new Error('Параметер не найден не существует')
-            }
+            if (!parameterSearch) return new Error('Параметер не найден не существует')
             for (let [key, value] of Object.entries(input.parameters)) {
                 if (key !== 'id' && value) {
                     await parameterSearch.update({[key]: value})
@@ -84,9 +89,7 @@ const root = {
         /** Remove new item Parameter for user*/
         if (input.parameters.event === 'remove') {
             const parameterSearch = await Parameter.findOne({where: {id: input.id}})
-            if (!parameterSearch){
-                return new Error('Параметер не найден')
-            }
+            if (!parameterSearch) return new Error('Параметер не найден')
             await Parameter.destroy({where: {id: parameterSearch.id}})
             return {id: input.id}
         }
@@ -94,9 +97,7 @@ const root = {
 
      updatePersonalClient: async ({input}) => {
         const personalSearch = await Personal.findOne({where: {id: input.id}})
-        if (!personalSearch){
-            return new Error('Персональные данные не найдены')
-        }
+        if (!personalSearch) return new Error('Персональные данные не найдены')
         for (let [key, value] of Object.entries(input)) {
             if (key !== 'id' && value) {
                 await personalSearch.update({[key]: value})
@@ -107,18 +108,40 @@ const root = {
 
     updateActiveClient: async ({input}) => {
         const userSearch = await User.findOne({where: {id: input.id}})
-        if (!userSearch){
-            return new Error('Пользователь не найден')
-        }
+        if (!userSearch) return new Error('Пользователь не найден')
         await userSearch.update({is_active: input.active})
         return {id: input.id}
     },
 
-    createTrainingDays: async ({input}) => {
-        const userSearch = await User.findOne({where: {id: input.id}});
-        if (!userSearch){
-            return new Error('Пользователя не существует')
+    updateFeedClient: async ({input}) => {
+        const userSearch = await User.findOne({where: {id: input.id}})
+        if (!userSearch) return new Error('Пользователь не найден')
+        const [feed, created] = await Feed.findOrCreate(
+            {
+                where: { userId: input.id },
+                defaults: {
+                    protein: input.feed.protein,
+                    fat: input.feed.fat,
+                    carbohydrates: input.feed.carbohydrates,
+                    recommendation: input.feed.recommendation
+                }
+            }
+        )
+        if (!created) {
+            feed.set({
+                protein: input.feed.protein,
+                fat: input.feed.fat,
+                carbohydrates: input.feed.carbohydrates,
+                recommendation: input.feed.recommendation
+            })
+            await feed.save()
         }
+        return {id: input.id}
+    },
+
+    createTrainingDays: async ({input}) => {
+        const userSearch = await User.findOne({where: {id: input.id}})
+        if (!userSearch) return new Error('Пользователя не существует')
         for (const schedule of input.schedules) {
             const dataSchedules = {
                 date: schedule.date,
