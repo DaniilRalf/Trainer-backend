@@ -28,6 +28,21 @@ const root = {
         return allClients;
     },
 
+    getItemClient: async ({input}) => {
+        const itemClient = await User.findOne({
+            where: {id: input.id},
+            include: [
+                Role,
+                Personal,
+                Parameter,
+                Schedule,
+                Photo,
+                Feed
+            ],
+        });
+        return itemClient;
+    },
+
     createClient: async ({input}) => {
         const userSearch = await User.findOne({where: {username: input.username}});
         if (userSearch){
@@ -152,6 +167,23 @@ const root = {
             const scheduleItem = await Schedule.create(dataSchedules)
             await userSearch.addSchedules([scheduleItem])
           }
+        return {id: input.id}
+    },
+
+    updateItemClientSchedule: async ({input}) => {
+        const scheduleSearch = await Schedule.findOne({where: {id: input.id}})
+        if (!scheduleSearch) return new Error('Пользователя не существует')
+        if (input.event && input.event === 'update') {
+            for (let [key, value] of Object.entries(input)) {
+                if ((key !== 'id' || key !== 'event') && value) {
+                    await scheduleSearch.update({[key]: value})
+                }
+            }
+        } else if (input.event && input.event === 'remove') {
+            await scheduleSearch.destroy()
+        } else if (!input.event) {
+            return new Error('Не корректно переданные данные')
+        }
         return {id: input.id}
     }
 

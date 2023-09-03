@@ -93,6 +93,7 @@ const schema = buildSchema(`
         date_metering: Float
     }
     input ScheduleInput {
+        event: String
         id: ID
         date: Float
         description: String
@@ -112,6 +113,7 @@ const schema = buildSchema(`
         getUser(id: ID): User
         getUserPersonalParameters(username: String): User 
         getAllClients: [User]
+        getItemClient(input: UserInput): User
     }
     type Mutation {
     
@@ -125,6 +127,7 @@ const schema = buildSchema(`
         updatePersonalClient(input: PersonalInput): User
         updateActiveClient(input: UserInput): User
         updateFeedClient(input: UserInput): User
+        updateItemClientSchedule(input: ScheduleInput): Schedule
         
     }
 `)
