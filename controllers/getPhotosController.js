@@ -9,6 +9,16 @@ const {
 
 class GetPhotosController {
 
+    async getAvatar(req, res) {
+        try {
+            const { id } = req.body;
+            const PhotoItems = await Photo.findOne({where: {userId: id, type: 1}})
+            res.json(PhotoItems);
+        } catch (e) {
+            res.status(400).json(e)
+        }
+    }
+
     async getAllBeforeAfterPhoto(req, res) {
         try {
             const { id } = req.body;

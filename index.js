@@ -11,6 +11,7 @@ const schema = require('./api/qraphql/schema')
 const root = require('./controllers/qraphQL/index')
 const routers = require("./api/routers")
 const defaultData = require("./workers/defolt-data")
+const deleteOldFiles = require('./workers/remove-photos')
 
 const checkAuth = require('./middleware/authorization')
 
@@ -43,6 +44,7 @@ const start = async () => {
         await sequelize.sync({alter: true});  /** сверяем БД с теми моделями что мы описали*/
         await defaultData(); /** создаем дефолтные роли*/
         await app.listen(PORT, () => console.log(`SERVER START ON - http://localhost:${PORT}`))
+        await deleteOldFiles()
     } catch (e) {
         console.log(`ERROR - ${e}`) /** отлавливаем ошибку при подключении*/
     }
