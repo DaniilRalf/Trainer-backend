@@ -50,7 +50,7 @@ const Feed = sequelize.define('feed', {
     protein: {type: DataTypes.STRING, required: false},
     fat: {type: DataTypes.STRING, required: false},
     carbohydrates: {type: DataTypes.STRING, required: false},
-    recommendation: {type: DataTypes.STRING, required: false},
+    recommendation: {type: DataTypes.TEXT, required: false},
 })
 
 Role.hasMany(User)
